@@ -1,0 +1,126 @@
+<div class="header">
+  <h3 class="text-muted">SaaS Cash Planner</h3>
+</div>
+
+   <nvd3-line-chart
+        height="450"
+        data="chartData"
+        showXAxis="true"
+        showYAxis="true"
+        tooltips="true"
+        showLegend="true"
+        x="xFunction()"
+        y="yFunction()"
+        interactive="true"
+        useInteractiveGuideLine="true"
+        isArea="true"
+        margin="{left:75,top:50,bottom:50,right:50}"
+        xAxisLabel="month"
+        yAxisLabel="Cashflow (€)"
+        xAxisTickValues="[12, 24, 36, 48, 60, 72]"
+        yAxisTickFormat="yAxisTickFormatFunction()"
+        noData="Press 'Update Chart' for an updated simulation.">
+<svg></svg>
+    </nvd3-line-chart>
+
+  <form class="form-horizontal" data-ng-submit="doSimulation()">
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="customersMonth0">customers at month 0</label>
+      <div class="col-sm-3">
+        <input type="number" class="form-control" data-ng-model="simulation.customersMonth0" id="customersMonth0" placeholder="8" required>
+      </div>
+      <label class="col-sm-3 control-label" for="leadCost">Cost of 1 lead</label>
+      <div class="col-sm-3 input-group">
+        <input type="number" class="form-control" data-ng-model="simulation.leadCost" id="leadCost" placeholder="10" required>
+        <span class="input-group-addon">€</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="leadsPerMonth">Leads/Month</label>
+      <div class="col-sm-3">
+        <input type="number" class="form-control" data-ng-model="simulation.leadsPerMonth" id="leadsPerMonth" placeholder="8" required>
+      </div>
+      <label class="col-sm-3 control-label" for="costOfSale">Cost of 1 sale</label>
+      <div class="col-sm-3 input-group">
+        <input type="number" class="form-control" data-ng-model="simulation.costOfSale" id="costOfSale" placeholder="10" required>
+        <span class="input-group-addon">€</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="conversionRate">Conversion Rate</label>
+      <div class="col-sm-3 input-group">
+        <input type="number" class="form-control" data-ng-model="simulation.conversionRate" id="conversionRate" placeholder="25" required>
+        <span class="input-group-addon">%</span>
+      </div>
+      <label class="col-sm-3 control-label" for="monthlyChurn">Monthly Churn</label>
+      <div class="col-sm-3 input-group">
+        <input type="number" class="form-control" data-ng-model="simulation.monthlyChurn" id="monthlyChurn" placeholder="1" required>
+        <span class="input-group-addon">%</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="monthlyFee">Monthly fee</label>
+      <div class="col-sm-3 input-group">
+        <input type="number" class="form-control" data-ng-model="simulation.monthlyFee" id="monthlyFee" placeholder="50" required>
+        <span class="input-group-addon">€</span>
+      </div>
+      <label class="col-sm-3 control-label" for="productStaff">Product Staff</label>
+      <div class="col-sm-3">
+        <input type="number" class="form-control" data-ng-model="simulation.productStaff" id="productStaff" placeholder="2" required>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-3 control-label" for="capital">Capital</label>
+      <div class="col-sm-3 input-group">
+        <input type="number" class="form-control" data-ng-model="simulation.capital" id="capital" placeholder="50000" required>
+        <span class="input-group-addon">€</span>
+      </div>
+      <label class="col-sm-3 control-label" for="serviceCostPerCustomerPerMonth">Service Cost / Customer / Month</label>
+      <div class="col-sm-3 input-group">
+        <input type="number" class="form-control" data-ng-model="simulation.serviceCostPerCustomerPerMonth" id="serviceCostPerCustomerPerMonth" placeholder="50000" required>
+        <span class="input-group-addon">€</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="col-sm-3 col-sm-offset-5">
+        <input type="submit" class="btn btn-primary form-control" value="Simulate">
+      </div>
+    </div>
+</form>
+
+<h4>Previous Simulations</h4>
+<table class="table table-striped table-bordered">
+  <thead><tr>
+    <th></th>
+    <th>Customers at month 0</th>
+    <th>Leads/month</th>
+    <th>Conversion Rate</th>
+    <th>Monthly Fee</th>
+    <th>Capital</th>
+    <th>Cost 1 lead</th>
+    <th>Cost 1 sale</th>
+    <th>Monthly Churn</th>
+    <th>Staff</th>
+    <th>Service Cost</th>
+  </tr></thead>
+  <tbody>
+    <tr ng-repeat="sim in simulations">
+      <td><a ng-click="applySimulation(sim)">Show</a></td>
+      <td>{{sim.customersMonth0}}</td>
+      <td>{{sim.leadsPerMonth}}</td>
+      <td>{{sim.conversionRate}}</td>
+      <td>{{sim.monthlyFee}}</td>
+      <td>{{sim.capital}}</td>
+      <td>{{sim.leadCost}}</td>
+      <td>{{sim.costOfSale}}</td>
+      <td>{{sim.monthlyChurn}}</td>
+      <td>{{sim.productStaff}}</td>
+      <td>{{sim.serviceCostPerCustomerPerMonth}}</td>
+    </tr>
+  </tbody>
+</table>
+
+
+<div class="footer">
+  <p>By <a href="http://www.sirris.be">Sirris</a> and the <a href="http://www.nebucom.be">Nebucom</a> team.</p>
+</div>
