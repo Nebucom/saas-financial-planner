@@ -58,7 +58,7 @@ noData="Press 'Update Chart' for an updated simulation.">
 <h4>Previous Simulations</h4>
 <table class="table table-striped table-bordered">
   <thead><tr>
-    <th><a ng-click="plotSelected()">Show Selected</a></th>
+    <th><a ng-click="plotSelected()" class="btn btn-default btn-xs">Show Selected</a></th>
     <th></th>
     <th></th>
     <th>Monthly New Leads</th>
@@ -71,7 +71,7 @@ noData="Press 'Update Chart' for an updated simulation.">
   <tbody>
     <tr ng-repeat="sim in simulations">
       <td><input type="checkbox" data-ng-model="sim.isChecked"></td>
-      <td><a ng-click="showSimulation(sim)">Show</a></td>
+      <td><a ng-click="showSimulation(sim)" class="btn btn-default btn-xs">Show</a></td>
       <td>{{sim.name}}</td>
       <td>{{sim.numberOfNewCustomers}}</td>
       <td>{{sim.salesCost}}</td>
