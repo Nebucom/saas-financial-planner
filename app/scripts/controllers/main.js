@@ -30,24 +30,36 @@ angular.module('saasFinancialPlannerApp')
         return (d.y >= 0) ? 'green' : 'red';
       };
     };
-    $scope.applySimulation = function (simulation) {
+    $scope.showSimulation = function (simulation) {
       $scope.simulation = angular.extend({}, simulation);
-      $scope.updateChartData(simulation);
+      $scope.uncheckAllSims();
+      simulation.isChecked = true;
+      $scope.updateChartData(simulation.data);
+    };
+
+    $scope.plotSelected = function () {
+      var selectedSimData = [];
+      angular.forEach($scope.simulations, function (sim) {
+        if (sim.isChecked) {
+          selectedSimData.push(sim.data[0]);
+        }
+      });
+      $scope.updateChartData(selectedSimData);
     };
 
     $scope.doSimulation = function () {
       var cashPosition = [];
-      var nbrOfCustomersLastMonth = $scope.simulation.customersMonth0;
-      var cummulativeRevenueLastMonth = $scope.simulation.capital;
+      var nbrOfCustomersLastMonth = 0;
+      var cummulativeRevenueLastMonth = 0;
+      $scope.simulation.name = $scope.simulations.length;
+      $scope.simulation.isChecked = true;
+      $scope.uncheckAllSims();
 
       for (var i = 0; i < 72; i++) {
-        var newCustomers = Math.round(0.01 * $scope.simulation.leadsPerMonth * $scope.simulation.conversionRate);
         var churnedCustomers = Math.round(0.01 * $scope.simulation.monthlyChurn * nbrOfCustomersLastMonth);
-        var nbrOfCustomersThisMonth = nbrOfCustomersLastMonth + newCustomers - churnedCustomers;
-        var costOfAcquisition = $scope.simulation.leadsPerMonth * $scope.simulation.leadCost + newCustomers * $scope.simulation.costOfSale;
-        var personellCost = $scope.simulation.productStaff * 15000;
-        var serviceCost = $scope.simulation.serviceCostPerCustomerPerMonth * nbrOfCustomersThisMonth;
-        var revenueOfTheMonth = nbrOfCustomersThisMonth * $scope.simulation.monthlyFee - costOfAcquisition - personellCost - serviceCost;
+        var nbrOfCustomersThisMonth = nbrOfCustomersLastMonth + $scope.simulation.numberOfNewCustomers - churnedCustomers;
+        //var costOfAcquisition = $scope.simulation.leadsPerMonth * $scope.simulation.leadCost + $scope.simulation.numberOfNewCustomers * $scope.simulation.costOfSale;
+        var revenueOfTheMonth = nbrOfCustomersThisMonth * $scope.simulation.monthlyFee - $scope.simulation.salesCost;
         nbrOfCustomersLastMonth = nbrOfCustomersThisMonth;
         cummulativeRevenueLastMonth += revenueOfTheMonth;
         cashPosition.push({
@@ -57,14 +69,22 @@ angular.module('saasFinancialPlannerApp')
       }
       $scope.simulation.data = [{
         values: cashPosition,
-        key: 'Cash'
+        key: $scope.simulation.name
       }];
+      $scope.simulation.CAC = $scope.simulation.salesCost / $scope.simulation.numberOfNewCustomers;
+      $scope.simulation.LTV = $scope.simulation.monthlyFee / (0.01 * $scope.simulation.monthlyChurn);
       $scope.simulations.push(angular.extend({}, $scope.simulation));
-      $scope.updateChartData($scope.simulation);
+      $scope.updateChartData($scope.simulation.data);
     };
 
-    $scope.updateChartData = function (simulation) {
-      $scope.chartData = simulation.data;
+    $scope.uncheckAllSims = function () {
+      angular.forEach($scope.simulations, function (sim) {
+        sim.isChecked = false;
+      });
+    };
+
+    $scope.updateChartData = function (data) {
+      $scope.chartData = data;
     };
 
   });
