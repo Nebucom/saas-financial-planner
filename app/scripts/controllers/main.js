@@ -5,6 +5,7 @@ angular.module('saasFinancialPlannerApp')
     $scope.chartData = [];
     $scope.simulation = {};
     $scope.simulations = [];
+    $scope.nbrofMonths = 48;
 
 
     $scope.xFunction = function () {
@@ -54,8 +55,12 @@ angular.module('saasFinancialPlannerApp')
       $scope.simulation.name = $scope.simulations.length;
       $scope.simulation.isChecked = true;
       $scope.uncheckAllSims();
+      cashPosition.push({
+        x: 0,
+        y: 0
+      });
 
-      for (var i = 0; i < 72; i++) {
+      for (var i = 1; i < $scope.nbrofMonths + 1; i++) {
         var churnedCustomers = Math.round(0.01 * $scope.simulation.monthlyChurn * nbrOfCustomersLastMonth);
         var nbrOfCustomersThisMonth = nbrOfCustomersLastMonth + $scope.simulation.numberOfNewCustomers - churnedCustomers;
         //var costOfAcquisition = $scope.simulation.leadsPerMonth * $scope.simulation.leadCost + $scope.simulation.numberOfNewCustomers * $scope.simulation.costOfSale;
