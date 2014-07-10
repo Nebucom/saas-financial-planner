@@ -5,7 +5,9 @@ angular.module('saasFinancialPlannerApp', [
   'ngResource',
   'ngSanitize',
   'ngRoute',
-  'nvd3ChartDirectives'
+  'nvd3ChartDirectives',
+  'angulartics',
+  'angulartics.google.analytics'
 ])
   .config(function ($routeProvider) {
     $routeProvider
